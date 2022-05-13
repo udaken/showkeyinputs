@@ -97,7 +97,7 @@ namespace showkeyinputs
             const float PointsPerInch = 72f;
             return (pixel / _DpiY.Value) * PointsPerInch;
         }
-
+        GraphicsPath gp = new GraphicsPath();
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
@@ -113,15 +113,15 @@ namespace showkeyinputs
                         _sb.Append(_queue[i].KeyText).Append(' ');
                     lastKey = currentKey;
                 }
-                using (var gp = new GraphicsPath())
-                {
-                    gp.AddString(_sb.ToString(), SystemFonts.MessageBoxFont.FontFamily, 0, PixelToPoint(g, pictureBox1.Height / 2), e.ClipRectangle, _stringFormat);
 
-                    g.SmoothingMode = SmoothingMode.None;
-                    g.DrawPath(_pen, gp);
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                    g.FillPath(SystemBrushes.ControlText, gp);
-                }
+                gp.ClearMarkers();
+                gp.Reset();
+                gp.AddString(_sb.ToString(), SystemFonts.MessageBoxFont.FontFamily, 0, PixelToPoint(g, pictureBox1.Height / 2), e.ClipRectangle, _stringFormat);
+
+                g.SmoothingMode = SmoothingMode.None;
+                g.DrawPath(_pen, gp);
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.FillPath(SystemBrushes.ControlText, gp);
                 _sb.Clear();
             }
 
